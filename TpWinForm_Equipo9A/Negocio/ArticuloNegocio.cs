@@ -70,6 +70,30 @@ namespace Negocio
             }
         }
 
+        public void agregarDTO(Articulo nuevo)
+        {
+            AccesoDatos data = new AccesoDatos();
+
+            try
+            {
+                data.setearConsulta(
+                    "INSERT INTO ARTICULOS(Nombre, Descripcion, Codigo, Precio, IdMarca, IdCategoria) " +
+                    "VALUES('" + nuevo.Nombre + "', '" + nuevo.Descripcion + "', '" + nuevo.Codigo + "', " + nuevo.Precio.ToString(CultureInfo.InvariantCulture) + ", @IdMarca, @IdCategoria) ");
+                data.setearParametro("@IdMarca", nuevo.Marca.ID);
+                data.setearParametro("@IdCategoria", nuevo.Categoria.ID);
+                data.ejecutarAccion();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                data.cerrarConexion();
+            }
+        }
+
         public void agregar(Articulo nuevo)
         {
             AccesoDatos data = new AccesoDatos();
