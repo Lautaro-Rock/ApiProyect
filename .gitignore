@@ -1,0 +1,9 @@
+# Archivos y carpetas generados por Visual Studion.vs/n*.usern*.suonn# Carpetas de salida de compilaciónnbin/nobj/nn# Configuraciones de entornon*.envnn# Archivos temporalesn*.logn*.vsidx
+
+# Visual Studio
+.vs/
+*.vsidx
+
+# Compilación
+bin/
+obj/
