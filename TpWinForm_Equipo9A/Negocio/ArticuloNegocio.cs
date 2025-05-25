@@ -161,20 +161,34 @@ namespace Negocio
         {
             AccesoDatos datos = new AccesoDatos();
             try
-            { 
-                if (edit.UrlImagen.Id == 0)
+            {
+                if (edit.UrlImagen != null && edit.UrlImagen.Id == 0)
                 {
                     agregarImagen(edit);
                 }
 
-                datos.setearConsulta("BEGIN TRANSACTION; " +
-                    "UPDATE ARTICULOS SET Codigo = @Codigo, Nombre = @Nombre, Descripcion = @Descripcion, IdMarca = @IdMarca, IdCategoria = @IdCategoria, Precio = @Precio WHERE Id = @Id; " +
-                    "UPDATE IMAGENES SET ImagenUrl = @ImagenUrl WHERE Id = "+edit.UrlImagen.Id+"" +
-                    "COMMIT;");
+                if (edit.UrlImagen != null)
+                {
+                    datos.setearConsulta(
+                        "BEGIN TRANSACTION; " +
+                        "UPDATE ARTICULOS SET Codigo = @Codigo, Nombre = @Nombre, Descripcion = @Descripcion, IdMarca = @IdMarca, IdCategoria = @IdCategoria, Precio = @Precio WHERE Id = @Id; " +
+                        "UPDATE IMAGENES SET ImagenUrl = @ImagenUrl WHERE Id = @IdImagen; " +
+                        "COMMIT;"
+                    );
+
+                    datos.setearParametro("@ImagenUrl", edit.UrlImagen.ImagenUrl);
+                    datos.setearParametro("@IdImagen", edit.UrlImagen.Id);
+                }
+                else
+                {
+                    datos.setearConsulta(
+                        "UPDATE ARTICULOS SET Codigo = @Codigo, Nombre = @Nombre, Descripcion = @Descripcion, IdMarca = @IdMarca, IdCategoria = @IdCategoria, Precio = @Precio WHERE Id = @Id;"
+                    );
+                }
+
                 datos.setearParametro("@Codigo", edit.Codigo);
                 datos.setearParametro("@Nombre", edit.Nombre);
                 datos.setearParametro("@Descripcion", edit.Descripcion);
-                datos.setearParametro("@ImagenUrl", edit.UrlImagen.ImagenUrl);
                 datos.setearParametro("@IdMarca", edit.Marca.ID);
                 datos.setearParametro("@IdCategoria", edit.Categoria.ID);
                 datos.setearParametro("@Precio", edit.Precio);
@@ -184,11 +198,58 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-            finally { datos.cerrarConexion();}
+            finally
+            {
+                datos.cerrarConexion();
+            }
         }
+
+
+
+
+        public void agregar_imagenes(Articulo articulo)
+        {
+
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+
+                for (int i = 0; i < articulo.UrlImagens.Count; i++)
+                {
+
+                    datos.setearConsulta("INSERT INTO IMAGENES (IdArticulo, ImagenUrl) VALUES (@IdArticulo, @ImagenUrl)");
+                    datos.setearParametro("@IdArticulo", articulo.ID);
+                    datos.setearParametro("@ImagenUrl", articulo.UrlImagens[i].ImagenUrl);
+                    datos.ejecutarAccion();
+
+                }    
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally { datos.cerrarConexion(); }
+
+
+            return;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public List<Articulo> filtrar(string campo, string criterio, string filtro)
         {
@@ -292,3 +353,7 @@ namespace Negocio
         }
     }
 }
+
+
+
+

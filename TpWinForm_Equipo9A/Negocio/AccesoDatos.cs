@@ -24,6 +24,7 @@ namespace Negocio
         }
         public void setearConsulta(string consulta)
         {
+            
             conexionCommand.CommandType=System.Data.CommandType.Text;
             conexionCommand.CommandText=consulta;
         }
