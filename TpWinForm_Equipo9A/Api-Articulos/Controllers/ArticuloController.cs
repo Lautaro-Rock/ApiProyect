@@ -16,7 +16,7 @@ namespace Api_Articulos.Controllers
 
         // GET: api/Articulo
         [HttpGet]
-        [Route("api/articulo")]
+        [Route("api/Articulo")]
         public  IEnumerable<Articulo> Get()
         {
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
@@ -25,7 +25,7 @@ namespace Api_Articulos.Controllers
 
         // GET: api/Articulo/5
         [HttpGet]
-        [Route("api/articulo/{id}")]
+        [Route("api/Articulo/{id}")]
         public Articulo Get(int id)
         {
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
@@ -37,7 +37,7 @@ namespace Api_Articulos.Controllers
        
         // POST: api/Articulo
         [HttpPost]
-        [Route("api/articulo")]
+        [Route("api/Articulo")]
         public HttpResponseMessage PostArticulo([FromBody] ArticuloDTO articulo)
         {
             try
@@ -63,7 +63,7 @@ namespace Api_Articulos.Controllers
 
         // POST: api/Articulo/agregar_imagenes
         [HttpPost]
-        [Route("api/articulo/agregar_imagenes")]
+        [Route("api/Articulo/agregar_imagenes")]
         public HttpResponseMessage PostImagenes([FromBody] ImagenesDTO imagenes)
         {
             try
@@ -96,6 +96,8 @@ namespace Api_Articulos.Controllers
 
 
         // PUT: api/Articulo/5
+        [HttpPut]
+        [Route("api/Articulo/{id}")]
         public HttpResponseMessage Put(int id, [FromBody] ArticuloDTO articulo)
         {
             try
@@ -122,6 +124,8 @@ namespace Api_Articulos.Controllers
         }
 
         // DELETE: api/Articulo/5
+        [HttpDelete]
+        [Route("api/Articulo/{id}")]
         public HttpResponseMessage Delete(int id)
         {
             try
