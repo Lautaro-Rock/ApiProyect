@@ -15,8 +15,8 @@ namespace Negocio
             List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();
 
-            try 
-	        {
+            try
+            {
                 datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.Precio, A.IdMarca, M.Descripcion AS Marca, A.IdCategoria, C.Descripcion AS Categoria, I.Id AS IdImagen, I.ImagenUrl " +
                     "FROM ARTICULOS A " +
                     "LEFT JOIN MARCAS M ON A.IdMarca = M.Id " +
@@ -26,44 +26,56 @@ namespace Negocio
 
                 while (datos.ConexionDataReader.Read())
                 {
-                    Articulo aux = new Articulo();
-                    aux.Nombre = datos.ConexionDataReader["Nombre"] != DBNull.Value ? datos.ConexionDataReader["Nombre"].ToString() : "";
-                    aux.Descripcion = datos.ConexionDataReader["Descripcion"] != DBNull.Value ? datos.ConexionDataReader["Descripcion"].ToString() : "";
-                    aux.ID = (int)datos.ConexionDataReader["Id"];
-                    aux.Precio = datos.ConexionDataReader["Precio"] != DBNull.Value ? Convert.ToDecimal(datos.ConexionDataReader["Precio"]):0m;
-                    aux.Codigo = datos.ConexionDataReader["Codigo"] != DBNull.Value ? datos.ConexionDataReader["Codigo"].ToString() : "";
-                    aux.UrlImagen = new Imagen();
-                    if (!(datos.ConexionDataReader["IdImagen"] is DBNull))
+                    int idArticulo = (int)datos.ConexionDataReader["Id"];
+                    Articulo existente = lista.FirstOrDefault(a => a.ID == idArticulo);
+
+                    if (existente == null)
                     {
-                        aux.UrlImagen.Id = (int)datos.ConexionDataReader["IdImagen"];
-                    }
-                    aux.UrlImagen.ImagenUrl = datos.ConexionDataReader["ImagenUrl"] != DBNull.Value ? datos.ConexionDataReader["ImagenUrl"].ToString() : "";
-                    aux.Marca = new Marca();
-                    if (!(datos.ConexionDataReader["IdMarca"] is DBNull))
-                    {
+                        Articulo aux = new Articulo();
+                        aux.ID = idArticulo;
+                        aux.Codigo = datos.ConexionDataReader["Codigo"] != DBNull.Value ? datos.ConexionDataReader["Codigo"].ToString() : "";
+                        aux.Nombre = datos.ConexionDataReader["Nombre"] != DBNull.Value ? datos.ConexionDataReader["Nombre"].ToString() : "";
+                        aux.Descripcion = datos.ConexionDataReader["Descripcion"] != DBNull.Value ? datos.ConexionDataReader["Descripcion"].ToString() : "";
+                        aux.Precio = datos.ConexionDataReader["Precio"] != DBNull.Value ? Convert.ToDecimal(datos.ConexionDataReader["Precio"]) : 0m;
+                        aux.Marca = new Marca();
+                        if (!(datos.ConexionDataReader["IdMarca"] is DBNull))
                         aux.Marca.ID = (int)datos.ConexionDataReader["IdMarca"];
-                    }
-                    aux.Marca.Descripcion = datos.ConexionDataReader["Marca"] != DBNull.Value ? datos.ConexionDataReader["Marca"].ToString() : "";
-                    aux.Categoria = new Categoria();
-                    if (!(datos.ConexionDataReader["IdCategoria"] is DBNull))
-                    {  
+                        aux.Marca.Descripcion = datos.ConexionDataReader["Marca"] != DBNull.Value ? datos.ConexionDataReader["Marca"].ToString() : "";
+                        aux.Categoria = new Categoria();
+                        if (!(datos.ConexionDataReader["IdCategoria"] is DBNull))
                         aux.Categoria.ID = (int)datos.ConexionDataReader["IdCategoria"];
+                        aux.Categoria.Descripcion = datos.ConexionDataReader["Categoria"] != DBNull.Value ? datos.ConexionDataReader["Categoria"].ToString() : "";
+                        aux.UrlImagens = new List<Imagen>();
+                        if (!(datos.ConexionDataReader["ImagenUrl"] is DBNull))
+                        {
+                            Imagen img = new Imagen();
+                            if (!(datos.ConexionDataReader["IdImagen"] is DBNull))
+                                img.Id = (int)datos.ConexionDataReader["IdImagen"];
+                            img.ImagenUrl = datos.ConexionDataReader["ImagenUrl"].ToString();
+                            aux.UrlImagens.Add(img);
+                        }
+
+                        lista.Add(aux);
                     }
-                    aux.Categoria.Descripcion = datos.ConexionDataReader["Categoria"] != DBNull.Value ? datos.ConexionDataReader["Categoria"].ToString() : "";
-
-                    lista.Add(aux); 
-
+                    else
+                    {
+                        if (!(datos.ConexionDataReader["ImagenUrl"] is DBNull))
+                        {
+                            Imagen img = new Imagen();
+                            if (!(datos.ConexionDataReader["IdImagen"] is DBNull))
+                                img.Id = (int)datos.ConexionDataReader["IdImagen"];
+                            img.ImagenUrl = datos.ConexionDataReader["ImagenUrl"].ToString();
+                            existente.UrlImagens.Add(img);
+                        }
+                    }
                 }
 
-                return lista; 
-
+                return lista;
             }
-	        catch (Exception ex)
-	        {
-
-		        throw ex;
-	        }
-
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             finally
             {
                 datos.cerrarConexion();
@@ -216,11 +228,13 @@ namespace Negocio
 
             try
             {
+                datos.setearConsulta("INSERT INTO IMAGENES (IdArticulo, ImagenUrl) VALUES (@IdArticulo, @ImagenUrl)");
+
 
                 for (int i = 0; i < articulo.UrlImagens.Count; i++)
                 {
 
-                    datos.setearConsulta("INSERT INTO IMAGENES (IdArticulo, ImagenUrl) VALUES (@IdArticulo, @ImagenUrl)");
+                    
                     datos.setearParametro("@IdArticulo", articulo.ID);
                     datos.setearParametro("@ImagenUrl", articulo.UrlImagens[i].ImagenUrl);
                     datos.ejecutarAccion();

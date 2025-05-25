@@ -13,7 +13,10 @@ namespace Api_Articulos.Controllers
 {
     public class ArticuloController : ApiController
     {
+
         // GET: api/Articulo
+        [HttpGet]
+        [Route("api/articulo")]
         public IEnumerable<Articulo> Get()
         {
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
