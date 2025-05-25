@@ -17,13 +17,15 @@ namespace Api_Articulos.Controllers
         // GET: api/Articulo
         [HttpGet]
         [Route("api/articulo")]
-        public IEnumerable<Articulo> Get()
+        public  IEnumerable<Articulo> Get()
         {
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
             return articuloNegocio.listar();
         }
 
         // GET: api/Articulo/5
+        [HttpGet]
+        [Route("api/articulo/{id}")]
         public Articulo Get(int id)
         {
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
@@ -36,70 +38,106 @@ namespace Api_Articulos.Controllers
         // POST: api/Articulo
         [HttpPost]
         [Route("api/articulo")]
-        public IHttpActionResult PostArticulo([FromBody] ArticuloDTO articulo)
+        public HttpResponseMessage PostArticulo([FromBody] ArticuloDTO articulo)
         {
-            ArticuloNegocio negocio = new ArticuloNegocio();
-            Articulo nuevo = new Articulo();
-            nuevo.Nombre = articulo.Nombre;
-            nuevo.Descripcion = articulo.Descripcion;
-            nuevo.Precio = articulo.Precio;
-            nuevo.Codigo = articulo.Codigo;
-            nuevo.Categoria = new Categoria { ID = articulo.IdCategoria };
-            nuevo.Marca = new Marca { ID = articulo.IdMarca };
-            negocio.agregarDTO(nuevo);
+            try
+            {
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                Articulo nuevo = new Articulo();
+                nuevo.Nombre = articulo.Nombre;
+                nuevo.Descripcion = articulo.Descripcion;
+                nuevo.Precio = articulo.Precio;
+                nuevo.Codigo = articulo.Codigo;
+                nuevo.Categoria = new Categoria { ID = articulo.IdCategoria };
+                nuevo.Marca = new Marca { ID = articulo.IdMarca };
+                negocio.agregarDTO(nuevo);
 
-            return Ok("Artículo agregado");
+                return Request.CreateResponse(HttpStatusCode.Created, "Articulo creado correctamente");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
+          
         }
 
         // POST: api/Articulo/agregar_imagenes
         [HttpPost]
         [Route("api/articulo/agregar_imagenes")]
-        public IHttpActionResult PostImagenes([FromBody] ImagenesDTO imagenes)
+        public HttpResponseMessage PostImagenes([FromBody] ImagenesDTO imagenes)
         {
-            ArticuloNegocio negocio = new ArticuloNegocio();
-            Articulo nuevo = new Articulo();
-            nuevo.ID = imagenes.Id;
-            nuevo.UrlImagens = new List<Imagen>();
+            try
+            {
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                Articulo nuevo = new Articulo();
+                nuevo.ID = imagenes.Id;
+                nuevo.UrlImagens = new List<Imagen>();
 
-            foreach (var item in imagenes.imagenDTOs) {
+                foreach (var item in imagenes.imagenDTOs)
+                {
 
-                Imagen imagen = new Imagen();
-                imagen.ImagenUrl = item.ImagenUrl;
-               // imagen.IdArticulo = imagenes.Id;
-                nuevo.UrlImagens.Add(imagen);
-            
+                    Imagen imagen = new Imagen();
+                    imagen.ImagenUrl = item.ImagenUrl;
+                    // imagen.IdArticulo = imagenes.Id;
+                    nuevo.UrlImagens.Add(imagen);
+
+                }
+                negocio.agregar_imagenes(nuevo);
+
+                return Request.CreateResponse(HttpStatusCode.Created, "Imagen agregada correctamente");
             }
-          negocio.agregar_imagenes(nuevo);
-            return Ok("Imagenes agregadas");
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
+            
 
         }
 
 
         // PUT: api/Articulo/5
-        public void Put(int id, [FromBody] ArticuloDTO articulo)
+        public HttpResponseMessage Put(int id, [FromBody] ArticuloDTO articulo)
         {
-            ArticuloNegocio negocio = new ArticuloNegocio();
-            Articulo nuevo = new Articulo();
-            nuevo.Nombre = articulo.Nombre;
-            nuevo.Descripcion = articulo.Descripcion;
-            nuevo.Precio = articulo.Precio;
-            nuevo.Codigo = articulo.Codigo;
-            nuevo.Categoria = new Categoria { ID = articulo.IdCategoria };
-            nuevo.Marca = new Marca { ID = articulo.IdMarca };
-            nuevo.ID = id;
+            try
+            {
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                Articulo nuevo = new Articulo();
+                nuevo.Nombre = articulo.Nombre;
+                nuevo.Descripcion = articulo.Descripcion;
+                nuevo.Precio = articulo.Precio;
+                nuevo.Codigo = articulo.Codigo;
+                nuevo.Categoria = new Categoria { ID = articulo.IdCategoria };
+                nuevo.Marca = new Marca { ID = articulo.IdMarca };
+                nuevo.ID = id;
+                negocio.editar(nuevo);
+                return Request.CreateResponse(HttpStatusCode.OK, "Producto editado correctamente");
 
-            negocio.editar(nuevo);
-      
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
+           
 
         }
 
         // DELETE: api/Articulo/5
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
-            ArticuloNegocio negocio = new ArticuloNegocio();
-            Articulo articulo = new Articulo();
-            articulo.ID = id; 
-            negocio.eliminar(articulo);
+            try
+            {
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                Articulo articulo = new Articulo();
+                articulo.ID = id;
+                negocio.eliminar(articulo);
+
+                return Request.CreateResponse(HttpStatusCode.OK, "Producto eliminado correctamente");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        
         }
     }
 }
