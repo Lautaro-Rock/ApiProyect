@@ -190,6 +190,51 @@ namespace Negocio
             finally { datos.cerrarConexion();}
         }
 
+
+
+
+        public void agregar_imagenes(Articulo articulo)
+        {
+
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+
+                for (int i = 0; i < articulo.UrlImagens.Count; i++)
+                {
+
+                    datos.setearConsulta("INSERT INTO IMAGENES (IdArticulo, ImagenUrl) VALUES (@IdArticulo, @ImagenUrl)");
+                    datos.setearParametro("@IdArticulo", articulo.ID);
+                    datos.setearParametro("@ImagenUrl", articulo.UrlImagens[i].ImagenUrl);
+                    datos.ejecutarAccion();
+
+                }    
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally { datos.cerrarConexion(); }
+
+
+            return;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         public List<Articulo> filtrar(string campo, string criterio, string filtro)
         {
             List<Articulo> lista = new List<Articulo>();
@@ -292,3 +337,7 @@ namespace Negocio
         }
     }
 }
+
+
+
+

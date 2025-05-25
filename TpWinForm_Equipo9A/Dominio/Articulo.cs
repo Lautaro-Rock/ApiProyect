@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace Dominio
 {
     public class Articulo
@@ -13,7 +15,10 @@ namespace Dominio
 
         public Categoria Categoria { get; set; }
 
+        
         public Imagen UrlImagen { get; set; }
+
+        public List<Imagen> UrlImagens { get; set; }
 
     }
 }

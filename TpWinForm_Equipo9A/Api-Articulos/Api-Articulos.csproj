@@ -162,6 +162,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ArticuloDTO.cs" />
+    <Compile Include="Models\imagenDTO.cs" />
+    <Compile Include="Models\ImagenesDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
