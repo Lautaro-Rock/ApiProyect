@@ -58,8 +58,11 @@ namespace Negocio
             catch(Exception ex) {
                 throw ex;
             }
-        }
-
+            finally {
+                conexion.Close();
+                conexionCommand.Parameters.Clear();
+            }
+               }
 
         public void cerrarConexion()
         {
