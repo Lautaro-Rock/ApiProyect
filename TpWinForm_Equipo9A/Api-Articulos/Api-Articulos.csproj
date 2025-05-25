@@ -315,10 +315,6 @@
       <Project>{4ad51e72-d658-441d-92ee-aaa5a789efdc}</Project>
       <Name>Negocio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TpWinForm_Equipo9A\TpWinForm_Equipo9A.csproj">
-      <Project>{1df700fc-16b0-40e5-b8a5-ea878404c49d}</Project>
-      <Name>TpWinForm_Equipo9A</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

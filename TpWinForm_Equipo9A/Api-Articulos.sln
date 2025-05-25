@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TpWinForm_Equipo9A", "TpWinForm_Equipo9A\TpWinForm_Equipo9A.csproj", "{1DF700FC-16B0-40E5-B8A5-EA878404C49D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dominio", "Dominio\Dominio.csproj", "{B52AEFD1-D139-457C-966C-C689A272B671}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Negocio", "Negocio\Negocio.csproj", "{4AD51E72-D658-441D-92EE-AAA5A789EFDC}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1DF700FC-16B0-40E5-B8A5-EA878404C49D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1DF700FC-16B0-40E5-B8A5-EA878404C49D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1DF700FC-16B0-40E5-B8A5-EA878404C49D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1DF700FC-16B0-40E5-B8A5-EA878404C49D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B52AEFD1-D139-457C-966C-C689A272B671}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B52AEFD1-D139-457C-966C-C689A272B671}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B52AEFD1-D139-457C-966C-C689A272B671}.Release|Any CPU.ActiveCfg = Release|Any CPU
