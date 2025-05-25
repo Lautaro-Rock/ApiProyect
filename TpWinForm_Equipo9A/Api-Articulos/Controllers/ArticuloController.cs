@@ -92,8 +92,11 @@ namespace Api_Articulos.Controllers
 
         // DELETE: api/Articulo/5
         public void Delete(int id)
-
         {
+            ArticuloNegocio negocio = new ArticuloNegocio();
+            Articulo articulo = new Articulo();
+            articulo.ID = id; 
+            negocio.eliminar(articulo);
         }
     }
 }
