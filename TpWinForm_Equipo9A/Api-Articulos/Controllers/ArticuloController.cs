@@ -73,12 +73,26 @@ namespace Api_Articulos.Controllers
 
 
         // PUT: api/Articulo/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] ArticuloDTO articulo)
         {
+            ArticuloNegocio negocio = new ArticuloNegocio();
+            Articulo nuevo = new Articulo();
+            nuevo.Nombre = articulo.Nombre;
+            nuevo.Descripcion = articulo.Descripcion;
+            nuevo.Precio = articulo.Precio;
+            nuevo.Codigo = articulo.Codigo;
+            nuevo.Categoria = new Categoria { ID = articulo.IdCategoria };
+            nuevo.Marca = new Marca { ID = articulo.IdMarca };
+            nuevo.ID = id;
+
+            negocio.editar(nuevo);
+      
+
         }
 
         // DELETE: api/Articulo/5
         public void Delete(int id)
+
         {
         }
     }
