@@ -220,6 +220,34 @@ namespace Negocio
 
 
 
+        public bool consutar_id_articulo(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT COUNT(*) FROM ARTICULOS WHERE Id = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarLectura();
+
+                if (datos.ConexionDataReader.Read())
+                {
+                    int count = (int)datos.ConexionDataReader[0];
+                    return count > 0;
+                }
+                return false;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+
 
         public void agregar_imagenes(Articulo articulo)
         {
